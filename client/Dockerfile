@@ -26,6 +26,12 @@ RUN protoc --proto_path=./proto --go_out=. --go-grpc_out=. ./proto/*
 COPY ./client /app/
 
 # Build the client binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o /client 
 
+# Start a new stage from scratch for the final image
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
 
+COPY --from=builder /client /app/
 
+ENTRYPOINT ["/app/client"]
