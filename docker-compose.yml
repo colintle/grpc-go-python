@@ -1,19 +1,20 @@
 version: '3.8'
+
 services:
   server:
     build:
       context: .
       dockerfile: ./server/Dockerfile
     volumes:
-      - ./proto:/app/proto
+      - ./server:/app
     ports:
       - "50051:50051"
+
   client:
     build:
       context: .
       dockerfile: ./client/Dockerfile
-    volumes:
-      - ./proto:/app/proto
+    # volumes:
+    #   - ./client/internal:/app/internal
     depends_on:
       - server
-  
